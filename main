@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tu Página Web</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        #content {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Pestaña 1 -->
+    <div id="pestaña1" class="content">
+        <h2>Pestaña 1</h2>
+        <button onclick="mostrarPestana('pestaña2')">Ir a Pestaña 2</button>
+        <button onclick="mostrarPestana('pestaña3')">Ir a Pestaña 3</button>
+        <button onclick="mostrarPestana('pestaña4')">Ir a Pestaña 4</button>
+    </div>
+
+    <!-- Pestaña 2 -->
+    <div id="pestaña2" class="content hidden">
+        <h2>Pestaña 2</h2>
+        <label for="servoInput">Valor (0-180):</label>
+        <input type="number" id="servoInput" min="0" max="180">
+        <button onclick="moverServo()">Mover Servomotor</button>
+        <p id="servoError" class="hidden">Error: El valor debe estar entre 0 y 180.</p>
+        <button onclick="mostrarPestana('pestaña1')">Volver a Pestaña 1</button>
+    </div>
+
+    <!-- Pestaña 3 -->
+    <div id="pestaña3" class="content hidden">
+        <h2>Pestaña 3</h2>
+        <label for="dcInput">Valor (0-100):</label>
+        <input type="number" id="dcInput" min="0" max="100">
+        <button onclick="moverDC()">Mover Motor DC</button>
+        <p id="dcError" class="hidden">Error: El valor debe estar entre 0 y 100.</p>
+        <button onclick="mostrarPestana('pestaña1')">Volver a Pestaña 1</button>
+    </div>
+
+    <!-- Pestaña 4 -->
+    <div id="pestaña4" class="content hidden">
+        <h2>Pestaña 4</h2>
+        <!-- Agrega aquí la lógica para recibir datos del sensor I2C -->
+        <button onclick="mostrarPestana('pestaña1')">Volver a Pestaña 1</button>
+    </div>
+
+    <script>
+        function mostrarPestana(pestana) {
+            // Ocultar todas las pestañas
+            var pestañas = document.querySelectorAll('.content');
+            pestañas.forEach(function (element) {
+                element.classList.add('hidden');
+            });
+
+            // Mostrar la pestaña seleccionada
+            document.getElementById(pestana).classList.remove('hidden');
+        }
+
+        function moverServo() {
+            var valor = document.getElementById('servoInput').value;
+            var errorMensaje = document.getElementById('servoError');
+
+            if (valor >= 0 && valor <= 180) {
+                // Lógica para mover el servomotor
+                errorMensaje.classList.add('hidden');
+            } else {
+                errorMensaje.classList.remove('hidden');
+            }
+        }
+
+        function moverDC() {
+            var valor = document.getElementById('dcInput').value;
+            var errorMensaje = document.getElementById('dcError');
+
+            if (valor >= 0 && valor <= 100) {
+                // Lógica para mover el motor DC
+                errorMensaje.classList.add('hidden');
+            } else {
+                errorMensaje.classList.remove('hidden');
+            }
+        }
+    </script>
+
+</body>
+</html>
