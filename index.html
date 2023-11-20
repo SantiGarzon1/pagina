@@ -53,7 +53,8 @@
     <!-- Pestaña 4 -->
     <div id="pestaña4" class="content hidden">
         <h2>Pestaña 4</h2>
-        <!-- Agrega aquí la lógica para recibir datos del sensor I2C -->
+        <!-- Aquí podrías mostrar información del sensor I2C recibida desde el servidor Flask -->
+        <p id="sensorData">Datos del Sensor I2C: </p>
         <button onclick="mostrarPestana('pestaña1')">Volver a Pestaña 1</button>
     </div>
 
@@ -74,8 +75,9 @@
             var errorMensaje = document.getElementById('servoError');
 
             if (valor >= 0 && valor <= 180) {
-                // Lógica para mover el servomotor
+                // Enviar el valor al servidor Flask para controlar el servomotor
                 errorMensaje.classList.add('hidden');
+                enviarComando('/mover_servo', { valor: valor });
             } else {
                 errorMensaje.classList.remove('hidden');
             }
@@ -86,11 +88,28 @@
             var errorMensaje = document.getElementById('dcError');
 
             if (valor >= 0 && valor <= 100) {
-                // Lógica para mover el motor DC
+                // Enviar el valor al servidor Flask para controlar el motor DC
                 errorMensaje.classList.add('hidden');
+                enviarComando('/mover_dc', { valor: valor });
             } else {
                 errorMensaje.classList.remove('hidden');
             }
+        }
+
+        function enviarComando(ruta, datos) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', ruta, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == XMLHttpRequest.DONE) {
+                    if (xhr.status == 200) {
+                        console.log('Comando enviado con éxito');
+                    } else {
+                        console.error('Error al enviar el comando');
+                    }
+                }
+            };
+            xhr.send(JSON.stringify(datos));
         }
     </script>
 
